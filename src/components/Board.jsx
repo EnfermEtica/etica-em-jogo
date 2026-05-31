@@ -61,7 +61,11 @@ export default function Board({ positions, teams }) {
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg"
-      style={{ width: '90vw', height: 'auto', maxWidth: '1100px' }}>
+      style={{ width: '100%',
+    height: 'auto',
+    maxWidth: '750px',
+    display: 'block',
+    margin: '0 auto' }}>
       <defs>
         {/* Fundo bege com textura */}
         <filter id="paper" x="0" y="0" width="100%" height="100%">
