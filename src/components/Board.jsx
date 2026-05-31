@@ -3,24 +3,24 @@ import { BOARD, TELEPORTS } from '../data';
 
 // Posições centrais de cada casa no SVG 700x500
 const POS = [
-  [42,  440],  // 0  INÍCIO
-  [118, 440],  // 1  DILEMA (laranja)
-  [194, 440],  // 2  DILEMA (laranja)
-  [270, 440],  // 3  SABIAS QUE (carta)
-  [346, 440],  // 4  DILEMA (verde)
-  [422, 440],  // 5  ESTIVE A PENSAR (verde)
-  [498, 440],  // 6  DILEMA (verde)
-  [574, 440],  // 7  DILEMA (amarelo)
-  [574, 300],  // 8  DILEMA (amarelo)
-  [460, 300],  // 9  SABIAS QUE (carta laranja)
-  [346, 300],  // 10 O QUE ACHAS? (azul)
-  [232, 300],  // 11 NINGUÉM VIU! (azul)
-  [194, 155],  // 12 DILEMA (laranja)
-  [280, 155],  // 13 DILEMA (laranja)
-  [390, 155],  // 14 SABIAS QUE (carta teal)
-  [476, 155],  // 15 NÃO ME INTERESSA (verde)
-  [562, 155],  // 16 DILEMA (verde)
-  [648, 155],  // 17 FIM (azul)
+  [60,  470],  // 0  INÍCIO
+  [150, 470],  // 1  DILEMA (laranja)
+  [240, 470],  // 2  DILEMA (laranja)
+  [330, 470],  // 3  SABIAS QUE (carta)
+  [420, 470],  // 4  DILEMA (verde)
+  [510, 470],  // 5  ESTIVE A PENSAR (verde)
+  [600, 470],  // 6  DILEMA (verde)
+  [600, 470],  // 7  DILEMA (amarelo)
+  [510, 310],  // 8  DILEMA (amarelo)
+  [420, 310],  // 9  SABIAS QUE (carta laranja)
+  [330, 310],  // 10 O QUE ACHAS? (azul)
+  [240, 310],  // 11 NINGUÉM VIU! (azul)
+  [240, 150],  // 12 DILEMA (laranja)
+  [330, 150],  // 13 DILEMA (laranja)
+  [420, 150],  // 14 SABIAS QUE (carta teal)
+  [510, 150],  // 15 NÃO ME INTERESSA (verde)
+  [600, 150],  // 16 DILEMA (verde)
+  [690, 150],  // 17 FIM (azul)
 ];
 
 // Cores dos círculos por posição (fiel ao original)
@@ -61,7 +61,7 @@ export default function Board({ positions, teams }) {
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg"
-      style={{ width: '100%', height: '100%' }}>
+      style={{ width: '90vw', height: 'auto', maxWidth: '1100px' }}>
       <defs>
         {/* Fundo bege com textura */}
         <filter id="paper" x="0" y="0" width="100%" height="100%">
