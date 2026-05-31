@@ -1,7 +1,3 @@
-Criar Board.jsx redesenhado fiel ao original
-bash
-
-cat > /home/claude/etica-em-jogo-v2/src/components/Board.jsx << 'ENDOFFILE'
 import React from 'react';
 import { BOARD, TELEPORTS } from '../data';
 
