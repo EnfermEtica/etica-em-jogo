@@ -2,7 +2,7 @@
   "name": "etica-em-jogo",
   "version": "2.0.0",
   "private": true,
-  "homepage": "https://SEU_UTILIZADOR.github.io/etica-em-jogo",
+  "homepage": "https://EnfermEtica.github.io/etica-em-jogo",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
