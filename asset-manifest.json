@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/etica-em-jogo/static/js/main.1bede580.js",
+    "main.js": "/etica-em-jogo/static/js/main.2bc630ca.js",
     "index.html": "/etica-em-jogo/index.html",
-    "main.1bede580.js.map": "/etica-em-jogo/static/js/main.1bede580.js.map"
+    "main.2bc630ca.js.map": "/etica-em-jogo/static/js/main.2bc630ca.js.map"
   },
   "entrypoints": [
-    "static/js/main.1bede580.js"
+    "static/js/main.2bc630ca.js"
   ]
 }
