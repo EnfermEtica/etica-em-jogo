@@ -134,7 +134,6 @@ export default function GameScreen({ teams, onRestart }) {
     const isSobe = TELEPORT_MESSAGES[fromPos]?.sobe;
     addLog(`${isSobe ? '🪜' : '🎿'} ${teams[tIdx].name} ${isSobe ? 'subiu' : 'desceu'}! → Casa ${BOARD[dest]?.n}`, true);
     processLanding(dest, tIdx);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams, addLog]);
 
   // ── Avançar após SABIAS QUE ───────────────────────────────────
