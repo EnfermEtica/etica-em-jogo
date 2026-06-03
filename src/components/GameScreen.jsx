@@ -95,7 +95,6 @@ export default function GameScreen({ teams, onRestart }) {
       }, 1000);
     }
     return () => clearInterval(sabiasRef.current);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sabiasActive]);
 
   const stopSabiasTimer = () => {
@@ -161,7 +160,6 @@ export default function GameScreen({ teams, onRestart }) {
     } else {
       processLanding(newPos, tIdx);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams, addLog, executeTeleport]);
 
   // ── Processar aterragem numa casa ─────────────────────────────
@@ -197,7 +195,6 @@ export default function GameScreen({ teams, onRestart }) {
       setSabiasCountdown(120);
       setSabiasActive(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addLog, resetTimer, timerDefault]);
 
   // ── Lançar dado ───────────────────────────────────────────────
