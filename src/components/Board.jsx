@@ -1,5 +1,5 @@
 import React from 'react';
-import { BOARD, TELEPORTS } from '../data';
+import { BOARD } from '../data';
 
 const POS = [
   [38,  400],  // 0  INÍCIO
@@ -7,25 +7,22 @@ const POS = [
   [176, 395],  // 2
   [252, 385],  // 3  SABIAS
   [326, 395],  // 4
-  [398, 393],  // 5  ESTIVE A PENSAR
+  [398, 393],  // 5  ESTIVE A PENSAR  🪜→7
   [468, 395],  // 6
   [496, 265],  // 7
   [426, 265],  // 8
   [354, 258],  // 9  SABIAS
-  [258, 265],  // 10 O QUE ACHAS
-  [188, 265],  // 11 NINGUÉM VIU
+  [258, 265],  // 10 O QUE ACHAS     🪜→13
+  [188, 265],  // 11 NINGUÉM VIU     🎿→2
   [186, 135],  // 12
   [256, 135],  // 13
   [332, 128],  // 14 SABIAS
-  [408, 133],  // 15 NÃO ME INTERESSA
+  [408, 133],  // 15 NÃO ME INTERESSA 🎿→8
   [476, 135],  // 16
   [544, 132],  // 17 FIM
 ];
 
-const TEAM_COLORS_FALLBACK = ['#7c3aed','#c05621','#1a5276','#1e6b45','#8b1a1a'];
-
 export default function Board({ positions, teams }) {
-  // Para cada posição, quais equipas estão lá
   const teamsAtPos = {};
   teams.forEach((t, i) => {
     const p = positions[i];
@@ -37,96 +34,80 @@ export default function Board({ positions, teams }) {
     const here = teamsAtPos[posIdx] || [];
     if (here.length === 0) return null;
     const [cx, cy] = POS[posIdx];
-    // Posicionar peças abaixo da casa, centradas
     const pieceR = 7;
     const spacing = 16;
     const totalW = (here.length - 1) * spacing;
     return here.map((tm, ti) => {
       const px = cx - totalW / 2 + ti * spacing;
-      const py = cy + 36;
+      const py = cy + 40;
       return (
         <g key={ti}>
-          <circle cx={px} cy={py} r={pieceR + 1} fill="white"/>
+          <circle cx={px} cy={py} r={pieceR + 1.5} fill="white" opacity="0.9"/>
           <circle cx={px} cy={py} r={pieceR} fill={tm.color} stroke="white" strokeWidth="1.5"/>
-          {/* seta a apontar para a casa */}
-          <line x1={px} y1={py - pieceR - 1} x2={px} y2={py - pieceR - 6}
-            stroke={tm.color} strokeWidth="1.5" strokeLinecap="round"/>
+          <line x1={px} y1={py - pieceR - 1} x2={px} y2={py - pieceR - 7}
+            stroke={tm.color} strokeWidth="2" strokeLinecap="round"/>
         </g>
       );
     });
   };
 
   return (
-    <svg viewBox="0 0 680 480" width="100%" role="img"
-      xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 680 480" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
       <title>Ética em Jogo — Tabuleiro</title>
-      <desc>Tabuleiro do jogo com 18 casas em percurso serpente</desc>
 
-      {/* Fundo bege */}
-      <rect width="680" height="480" fill="#e8e0d0" rx="0"/>
+      {/* Fundo */}
+      <rect width="680" height="480" fill="#e8e0d0"/>
       <ellipse cx="560" cy="80"  rx="28" ry="18" fill="#d4c4a8" opacity="0.5"/>
       <ellipse cx="80"  cy="380" rx="20" ry="14" fill="#d4c4a8" opacity="0.4"/>
       <ellipse cx="440" cy="300" rx="16" ry="11" fill="#c8b898" opacity="0.3"/>
       <ellipse cx="620" cy="360" rx="18" ry="12" fill="#d4c4a8" opacity="0.35"/>
 
-      {/* ── BRANDING canto superior esquerdo ── */}
-      <text x="18" y="28" fill="#5c3d2e" fontSize={8}
-        fontFamily="'Courier New',monospace" letterSpacing="2">PERCURSO INTERATIVO</text>
-      <text x="14" y="58" fill="#2c1810" fontSize={26}
-        fontFamily="Georgia,serif" fontStyle="italic" fontWeight="700">ÉTICA EM JOGO</text>
+      {/* Branding canto superior esquerdo */}
+      <text x="18" y="28" fill="#5c3d2e" fontSize={8} fontFamily="'Courier New',monospace" letterSpacing="2">PERCURSO INTERATIVO</text>
+      <text x="14" y="58" fill="#2c1810" fontSize={26} fontFamily="Georgia,serif" fontStyle="italic" fontWeight="700">ÉTICA EM JOGO</text>
       <line x1="14" y1="64" x2="190" y2="64" stroke="#2c1810" strokeWidth="1" opacity="0.35"/>
-      <text x="14" y="80" fill="#5c3d2e" fontSize={11}
-        fontFamily="Georgia,serif" fontStyle="italic">Jogo para refletir</text>
+      <text x="14" y="80" fill="#5c3d2e" fontSize={11} fontFamily="Georgia,serif" fontStyle="italic">Jogo para refletir</text>
 
-      {/* ── LIGAÇÕES percurso ── */}
-      {/* Fila baixo */}
-      {[[55,400,95,400],[135,400,170,400],[210,400,240,400],[295,400,325,400],[365,400,395,400],[435,400,465,400]].map(([x1,y1,x2,y2],i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#b8a888" strokeWidth="2" strokeDasharray="4,3" opacity="0.6"/>
+      {/* Ligações percurso */}
+      {[[55,400,95,400],[135,400,170,400],[210,400,240,400],[295,400,325,400],[365,400,395,400],[435,400,465,400]].map(([x1,y1,x2,y2],i)=>(
+        <line key={`bl${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#b8a888" strokeWidth="2" strokeDasharray="4,3" opacity="0.6"/>
       ))}
-      {/* Subida 6→7 */}
       <line x1="496" y1="367" x2="496" y2="295" stroke="#b8a888" strokeWidth="2" strokeDasharray="4,3" opacity="0.6"/>
-      {/* Fila meio */}
-      {[[465,265,435,265],[395,265,375,265],[320,265,290,265],[250,265,218,265]].map(([x1,y1,x2,y2],i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#b8a888" strokeWidth="2" strokeDasharray="4,3" opacity="0.6"/>
+      {[[465,265,435,265],[395,265,375,265],[320,265,290,265],[250,265,218,265]].map(([x1,y1,x2,y2],i)=>(
+        <line key={`ml${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#b8a888" strokeWidth="2" strokeDasharray="4,3" opacity="0.6"/>
       ))}
-      {/* Subida 11→12 */}
       <line x1="188" y1="237" x2="186" y2="168" stroke="#b8a888" strokeWidth="2" strokeDasharray="4,3" opacity="0.6"/>
-      {/* Fila cima */}
-      {[[215,135,228,135],[284,135,300,135],[364,135,380,135],[436,135,450,135],[505,135,530,135]].map(([x1,y1,x2,y2],i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#b8a888" strokeWidth="2" strokeDasharray="4,3" opacity="0.6"/>
+      {[[215,135,228,135],[284,135,300,135],[364,135,380,135],[436,135,450,135],[505,135,530,135]].map(([x1,y1,x2,y2],i)=>(
+        <line key={`tl${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#b8a888" strokeWidth="2" strokeDasharray="4,3" opacity="0.6"/>
       ))}
 
-      {/* ── ESCADAS ── */}
-      {/* 5→11 */}
-      <line x1="398" y1="365" x2="200" y2="253" stroke="#8B6914" strokeWidth="4" strokeLinecap="round" opacity="0.7"/>
-      <line x1="408" y1="365" x2="210" y2="253" stroke="#8B6914" strokeWidth="4" strokeLinecap="round" opacity="0.7"/>
-      {[[402,352,412,352],[394,337,404,337],[382,322,392,322],[360,307,370,307],[330,293,340,293]].map(([x1,y1,x2,y2],i)=>(
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#8B6914" strokeWidth="3" opacity="0.7"/>
+      {/* ── ESCADA 5→7: [398,393]→[496,265] ── */}
+      <line x1="394" y1="368" x2="490" y2="248" stroke="#8B6914" strokeWidth="4" strokeLinecap="round" opacity="0.75"/>
+      <line x1="404" y1="368" x2="500" y2="248" stroke="#8B6914" strokeWidth="4" strokeLinecap="round" opacity="0.75"/>
+      {[[395,352,406,352],[402,334,412,334],[412,316,422,316],[428,300,437,300],[443,282,452,282]].map(([x1,y1,x2,y2],i)=>(
+        <line key={`r57${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#8B6914" strokeWidth="3" opacity="0.75"/>
       ))}
-      <text x="335" y="340" fill="#5a3e00" fontSize={18} fontFamily="sans-serif" textAnchor="middle">🪜</text>
+      <text x="460" y="318" fill="#5a3e00" fontSize={16} fontFamily="sans-serif" textAnchor="middle">🪜</text>
 
-      {/* 10→14 */}
-      <line x1="262" y1="238" x2="325" y2="152" stroke="#8B6914" strokeWidth="4" strokeLinecap="round" opacity="0.7"/>
-      <line x1="272" y1="238" x2="335" y2="152" stroke="#8B6914" strokeWidth="4" strokeLinecap="round" opacity="0.7"/>
-      {[[264,224,274,224],[272,207,282,207],[285,190,295,190],[300,173,310,173]].map(([x1,y1,x2,y2],i)=>(
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#8B6914" strokeWidth="3" opacity="0.7"/>
+      {/* ── ESCADA 10→13: [258,265]→[256,135] quase vertical ── */}
+      <line x1="252" y1="238" x2="250" y2="162" stroke="#8B6914" strokeWidth="4" strokeLinecap="round" opacity="0.75"/>
+      <line x1="262" y1="238" x2="260" y2="162" stroke="#8B6914" strokeWidth="4" strokeLinecap="round" opacity="0.75"/>
+      {[[252,222,262,222],[251,205,261,205],[250,188,260,188],[250,172,260,172]].map(([x1,y1,x2,y2],i)=>(
+        <line key={`r1013${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#8B6914" strokeWidth="3" opacity="0.75"/>
       ))}
-      <text x="308" y="208" fill="#5a3e00" fontSize={18} fontFamily="sans-serif" textAnchor="middle">🪜</text>
+      <text x="240" y="200" fill="#5a3e00" fontSize={16} fontFamily="sans-serif" textAnchor="middle">🪜</text>
 
-      {/* ── ESCORREGADORES ── */}
-      {/* 11→3 */}
-      <path d="M188 238 Q182 335 258 373" stroke="#e74c3c" strokeWidth="5" fill="none" strokeLinecap="round" opacity="0.75"/>
-      <path d="M196 236 Q190 333 266 370" stroke="#e74c3c" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.4"/>
-      <text x="208" y="322" fill="#922b21" fontSize={18} fontFamily="sans-serif" textAnchor="middle">🎿</text>
+      {/* ── ESCORREGADOR 11→2: [188,265]→[176,395] quase vertical ── */}
+      <path d="M188 240 Q184 310 178 372" stroke="#e74c3c" strokeWidth="5" fill="none" strokeLinecap="round" opacity="0.8"/>
+      <path d="M196 238 Q192 308 186 370" stroke="#e74c3c" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.4"/>
+      <text x="218" y="315" fill="#922b21" fontSize={16} fontFamily="sans-serif" textAnchor="middle">🎿</text>
 
-      {/* 15→7 */}
-      <path d="M418 158 Q460 200 490 250" stroke="#e74c3c" strokeWidth="5" fill="none" strokeLinecap="round" opacity="0.75"/>
-      <path d="M426 155 Q468 198 498 248" stroke="#e74c3c" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.4"/>
-      <text x="466" y="210" fill="#922b21" fontSize={18} fontFamily="sans-serif" textAnchor="middle">🎿</text>
+      {/* ── ESCORREGADOR 15→8: [408,133]→[426,265] quase vertical ── */}
+      <path d="M410 158 Q415 200 422 242" stroke="#e74c3c" strokeWidth="5" fill="none" strokeLinecap="round" opacity="0.8"/>
+      <path d="M418 156 Q423 198 430 240" stroke="#e74c3c" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.4"/>
+      <text x="448" y="208" fill="#922b21" fontSize={16} fontFamily="sans-serif" textAnchor="middle">🎿</text>
 
-      {/* ══════════════════════════════════
-           CASAS — FILA BAIXO
-          ══════════════════════════════════ */}
+      {/* ═══════════════ CASAS FILA BAIXO ═══════════════ */}
 
       {/* INÍCIO */}
       <rect x="12" y="378" width="52" height="44" rx="10" fill="#2b6cb0"/>
@@ -135,7 +116,7 @@ export default function Board({ positions, teams }) {
       <circle cx="38" cy="375" r="4" fill="#888"/>
       {renderPieces(0)}
 
-      {/* Casa 1 — laranja */}
+      {/* Casa 1 */}
       <rect x="78" y="358" width="56" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="106" cy="363" r="4" fill="#888"/>
       <circle cx="106" cy="393" r="28" fill="#f97316" stroke="#ea580c" strokeWidth="2.5"/>
@@ -145,7 +126,7 @@ export default function Board({ positions, teams }) {
       <text x="106" y="430" fill="#5c3d2e" fontSize={7} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">DILEMA</text>
       {renderPieces(1)}
 
-      {/* Casa 2 — laranja */}
+      {/* Casa 2 */}
       <rect x="148" y="358" width="56" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="176" cy="363" r="4" fill="#888"/>
       <circle cx="176" cy="393" r="28" fill="#f97316" stroke="#ea580c" strokeWidth="2.5"/>
@@ -155,15 +136,14 @@ export default function Board({ positions, teams }) {
       <text x="176" y="430" fill="#5c3d2e" fontSize={7} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">DILEMA</text>
       {renderPieces(2)}
 
-      {/* Casa 3 — SABIAS QUE (roxa) */}
+      {/* Casa 3 — SABIAS (roxa) */}
       <rect x="218" y="356" width="68" height="52" rx="6" fill="#7c3aed" stroke="#5b21b6" strokeWidth="1.5"/>
       <rect x="220" y="358" width="64" height="18" rx="3" fill="#6d28d9" opacity="0.5"/>
-      <text x="225" y="369" fill="white" fontSize={7} fontFamily="'Courier New',monospace" fontWeight="700">SABIAS QUE</text>
-      <text x="252" y="385" fill="white" fontSize={9} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">TIRA UMA</text>
-      <text x="252" y="397" fill="white" fontSize={9} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">CARTA</text>
+      <text x="252" y="370" fill="white" fontSize={8} fontFamily="'Courier New',monospace" fontWeight="700" textAnchor="middle">TIRA UMA CARTA</text>
+      <text x="252" y="385" fill="white" fontSize={8} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">SABIAS QUE</text>
       {renderPieces(3)}
 
-      {/* Casa 4 — verde */}
+      {/* Casa 4 */}
       <rect x="298" y="358" width="56" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="326" cy="363" r="4" fill="#888"/>
       <circle cx="326" cy="393" r="28" fill="#16a34a" stroke="#15803d" strokeWidth="2.5"/>
@@ -173,7 +153,7 @@ export default function Board({ positions, teams }) {
       <text x="326" y="430" fill="#5c3d2e" fontSize={7} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">DILEMA</text>
       {renderPieces(4)}
 
-      {/* Casa 5 — verde, ESTIVE A PENSAR */}
+      {/* Casa 5 — ESTIVE A PENSAR */}
       <rect x="368" y="358" width="60" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="398" cy="363" r="4" fill="#888"/>
       <circle cx="398" cy="391" r="28" fill="#16a34a" stroke="#15803d" strokeWidth="2.5"/>
@@ -184,7 +164,7 @@ export default function Board({ positions, teams }) {
       <text x="398" y="437" fill="#5c3d2e" fontSize={6.5} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">PENSAR...</text>
       {renderPieces(5)}
 
-      {/* Casa 6 — verde */}
+      {/* Casa 6 */}
       <rect x="440" y="358" width="56" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="468" cy="363" r="4" fill="#888"/>
       <circle cx="468" cy="393" r="28" fill="#16a34a" stroke="#15803d" strokeWidth="2.5"/>
@@ -194,11 +174,9 @@ export default function Board({ positions, teams }) {
       <text x="468" y="430" fill="#5c3d2e" fontSize={7} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">DILEMA</text>
       {renderPieces(6)}
 
-      {/* ══════════════════════════════════
-           CASAS — FILA MEIO
-          ══════════════════════════════════ */}
+      {/* ═══════════════ CASAS FILA MEIO ═══════════════ */}
 
-      {/* Casa 7 — amarelo */}
+      {/* Casa 7 */}
       <rect x="468" y="228" width="56" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="496" cy="233" r="4" fill="#888"/>
       <circle cx="496" cy="263" r="28" fill="#eab308" stroke="#ca8a04" strokeWidth="2.5"/>
@@ -208,7 +186,7 @@ export default function Board({ positions, teams }) {
       <text x="496" y="300" fill="#5c3d2e" fontSize={7} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">DILEMA</text>
       {renderPieces(7)}
 
-      {/* Casa 8 — amarelo */}
+      {/* Casa 8 */}
       <rect x="398" y="228" width="56" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="426" cy="233" r="4" fill="#888"/>
       <circle cx="426" cy="263" r="28" fill="#eab308" stroke="#ca8a04" strokeWidth="2.5"/>
@@ -218,15 +196,14 @@ export default function Board({ positions, teams }) {
       <text x="426" y="300" fill="#5c3d2e" fontSize={7} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">DILEMA</text>
       {renderPieces(8)}
 
-      {/* Casa 9 — SABIAS QUE (laranja) */}
+      {/* Casa 9 — SABIAS (laranja) */}
       <rect x="318" y="230" width="68" height="52" rx="6" fill="#f97316" stroke="#ea580c" strokeWidth="1.5"/>
       <rect x="320" y="232" width="64" height="18" rx="3" fill="#ea580c" opacity="0.4"/>
-      <text x="326" y="243" fill="white" fontSize={7} fontFamily="'Courier New',monospace" fontWeight="700">SABIAS QUE</text>
-      <text x="352" y="259" fill="white" fontSize={9} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">TIRA UMA</text>
-      <text x="352" y="271" fill="white" fontSize={9} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">CARTA</text>
+      <text x="352" y="244" fill="white" fontSize={8} fontFamily="'Courier New',monospace" fontWeight="700" textAnchor="middle">TIRA UMA CARTA</text>
+      <text x="352" y="259" fill="white" fontSize={8} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">SABIAS QUE</text>
       {renderPieces(9)}
 
-      {/* Casa 10 — azul, O QUE ACHAS? */}
+      {/* Casa 10 — O QUE ACHAS? */}
       <rect x="228" y="228" width="60" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="258" cy="233" r="4" fill="#888"/>
       <circle cx="258" cy="263" r="28" fill="#2563eb" stroke="#1d4ed8" strokeWidth="2.5"/>
@@ -236,7 +213,7 @@ export default function Board({ positions, teams }) {
       <text x="258" y="299" fill="#5c3d2e" fontSize={6.5} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">O QUE ACHAS?</text>
       {renderPieces(10)}
 
-      {/* Casa 11 — azul, NINGUÉM VIU! */}
+      {/* Casa 11 — NINGUÉM VIU! */}
       <rect x="158" y="228" width="60" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="188" cy="233" r="4" fill="#888"/>
       <circle cx="188" cy="263" r="28" fill="#2563eb" stroke="#1d4ed8" strokeWidth="2.5"/>
@@ -246,11 +223,9 @@ export default function Board({ positions, teams }) {
       <text x="188" y="299" fill="#5c3d2e" fontSize={6.5} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">NINGUÉM VIU!</text>
       {renderPieces(11)}
 
-      {/* ══════════════════════════════════
-           CASAS — FILA CIMA
-          ══════════════════════════════════ */}
+      {/* ═══════════════ CASAS FILA CIMA ═══════════════ */}
 
-      {/* Casa 12 — laranja */}
+      {/* Casa 12 */}
       <rect x="158" y="98" width="56" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="186" cy="103" r="4" fill="#888"/>
       <circle cx="186" cy="133" r="28" fill="#f97316" stroke="#ea580c" strokeWidth="2.5"/>
@@ -260,7 +235,7 @@ export default function Board({ positions, teams }) {
       <text x="186" y="170" fill="#5c3d2e" fontSize={7} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">DILEMA</text>
       {renderPieces(12)}
 
-      {/* Casa 13 — laranja */}
+      {/* Casa 13 */}
       <rect x="228" y="98" width="56" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="256" cy="103" r="4" fill="#888"/>
       <circle cx="256" cy="133" r="28" fill="#f97316" stroke="#ea580c" strokeWidth="2.5"/>
@@ -270,15 +245,14 @@ export default function Board({ positions, teams }) {
       <text x="256" y="170" fill="#5c3d2e" fontSize={7} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">DILEMA</text>
       {renderPieces(13)}
 
-      {/* Casa 14 — SABIAS QUE (verde-azulado) */}
+      {/* Casa 14 — SABIAS (verde-azulado) */}
       <rect x="298" y="100" width="68" height="52" rx="6" fill="#0d9488" stroke="#0f766e" strokeWidth="1.5"/>
       <rect x="300" y="102" width="64" height="18" rx="3" fill="#0f766e" opacity="0.5"/>
-      <text x="306" y="113" fill="white" fontSize={7} fontFamily="'Courier New',monospace" fontWeight="700">SABIAS QUE</text>
-      <text x="332" y="129" fill="white" fontSize={9} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">TIRA UMA</text>
-      <text x="332" y="141" fill="white" fontSize={9} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">CARTA</text>
+      <text x="332" y="114" fill="white" fontSize={8} fontFamily="'Courier New',monospace" fontWeight="700" textAnchor="middle">TIRA UMA CARTA</text>
+      <text x="332" y="129" fill="white" fontSize={8} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">SABIAS QUE</text>
       {renderPieces(14)}
 
-      {/* Casa 15 — verde, NÃO ME INTERESSA! */}
+      {/* Casa 15 — NÃO ME INTERESSA! */}
       <rect x="378" y="98" width="60" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="408" cy="103" r="4" fill="#888"/>
       <circle cx="408" cy="131" r="28" fill="#16a34a" stroke="#15803d" strokeWidth="2.5"/>
@@ -289,7 +263,7 @@ export default function Board({ positions, teams }) {
       <text x="408" y="177" fill="#5c3d2e" fontSize={6} fontWeight="700" textAnchor="middle" fontFamily="'Courier New',monospace">INTERESSA!</text>
       {renderPieces(15)}
 
-      {/* Casa 16 — verde */}
+      {/* Casa 16 */}
       <rect x="448" y="98" width="56" height="66" rx="4" fill="white" opacity="0.85"/>
       <circle cx="476" cy="103" r="4" fill="#888"/>
       <circle cx="476" cy="133" r="28" fill="#16a34a" stroke="#15803d" strokeWidth="2.5"/>
