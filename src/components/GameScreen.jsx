@@ -95,6 +95,7 @@ export default function GameScreen({ teams, onRestart }) {
       }, 1000);
     }
     return () => clearInterval(sabiasRef.current);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sabiasActive]);
 
   const stopSabiasTimer = () => {
@@ -134,6 +135,7 @@ export default function GameScreen({ teams, onRestart }) {
     const isSobe = TELEPORT_MESSAGES[fromPos]?.sobe;
     addLog(`${isSobe ? '🪜' : '🎿'} ${teams[tIdx].name} ${isSobe ? 'subiu' : 'desceu'}! → Casa ${BOARD[dest]?.n}`, true);
     processLanding(dest, tIdx);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams, addLog]);
 
   // ── Avançar após SABIAS QUE ───────────────────────────────────
@@ -159,6 +161,7 @@ export default function GameScreen({ teams, onRestart }) {
     } else {
       processLanding(newPos, tIdx);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams, addLog, executeTeleport]);
 
   // ── Processar aterragem numa casa ─────────────────────────────
@@ -194,6 +197,7 @@ export default function GameScreen({ teams, onRestart }) {
       setSabiasCountdown(120);
       setSabiasActive(true);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addLog, resetTimer, timerDefault]);
 
   // ── Lançar dado ───────────────────────────────────────────────
@@ -289,7 +293,7 @@ export default function GameScreen({ teams, onRestart }) {
     <div style={{ height: '100vh', background: C.bg, display: 'flex', fontFamily: "'Special Elite', cursive", overflow: 'hidden' }}>
 
       {/* ── PAINEL ESQUERDO ── */}
-      <div style={{ width: 208, flexShrink: 0, background: C.paper, borderRight: `1.5px solid ${C.border}`, display: 'flex', flexDirection: 'column', padding: 12, gap: 10, overflowY: 'auto' }}>
+      <div style={{ width: 176, flexShrink: 0, background: C.paper, borderRight: `1.5px solid ${C.border}`, display: 'flex', flexDirection: 'column', padding: 10, gap: 8, overflowY: 'auto' }}>
         <div style={{ background: C.purple, color: 'white', textAlign: 'center', padding: '9px 10px', borderRadius: 6 }}>
           <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '0.9rem', fontWeight: 700, letterSpacing: 2 }}>ÉTICA EM JOGO</div>
           <div style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '0.66rem', color: C.goldLight }}>Ética &amp; Deontologia</div>
@@ -351,14 +355,14 @@ export default function GameScreen({ teams, onRestart }) {
       </div>
 
       {/* ── TABULEIRO ── */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 14, overflow: 'hidden' }}>
-        <div style={{ width: '100%', height: '100%', maxWidth: 560, maxHeight: 480 }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 8, overflow: 'hidden' }}>
+        <div style={{ width: '100%', height: '100%' }}>
           <Board positions={positions} teams={teams} />
         </div>
       </div>
 
       {/* ── PAINEL DIREITO ── */}
-      <div style={{ width: 248, flexShrink: 0, background: C.paper, borderLeft: `1.5px solid ${C.border}`, display: 'flex', flexDirection: 'column', padding: 12, gap: 10, overflowY: 'auto' }}>
+      <div style={{ width: 220, flexShrink: 0, background: C.paper, borderLeft: `1.5px solid ${C.border}`, display: 'flex', flexDirection: 'column', padding: 10, gap: 8, overflowY: 'auto' }}>
         <SectionTitle>Carta Activa</SectionTitle>
         {!activeCard ? (
           <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: '0.74rem', color: C.inkLight, textAlign: 'center', padding: '22px 8px', border: `1.5px dashed ${C.border}`, borderRadius: 8, lineHeight: 1.6 }}>
