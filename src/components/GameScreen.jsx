@@ -95,6 +95,7 @@ export default function GameScreen({ teams, onRestart }) {
       }, 1000);
     }
     return () => clearInterval(sabiasRef.current);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sabiasActive]);
 
   const stopSabiasTimer = () => {
@@ -134,6 +135,7 @@ export default function GameScreen({ teams, onRestart }) {
     const isSobe = TELEPORT_MESSAGES[fromPos]?.sobe;
     addLog(`${isSobe ? '🪜' : '🎿'} ${teams[tIdx].name} ${isSobe ? 'subiu' : 'desceu'}! → Casa ${BOARD[dest]?.n}`, true);
     processLanding(dest, tIdx);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams, addLog]);
 
   // ── Avançar após SABIAS QUE ───────────────────────────────────
@@ -159,6 +161,7 @@ export default function GameScreen({ teams, onRestart }) {
     } else {
       processLanding(newPos, tIdx);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams, addLog, executeTeleport]);
 
   // ── Processar aterragem numa casa ─────────────────────────────
@@ -194,6 +197,7 @@ export default function GameScreen({ teams, onRestart }) {
       setSabiasCountdown(120);
       setSabiasActive(true);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addLog, resetTimer, timerDefault]);
 
   // ── Lançar dado ───────────────────────────────────────────────
@@ -249,6 +253,63 @@ export default function GameScreen({ teams, onRestart }) {
     const tIdx = sabiasTurnRef.current;
     stopSabiasTimer();
     executeSabiasAdvance(pos, tIdx);
+  };
+
+  // ── Reiniciar jogo (mantém equipas) ──────────────────────────
+  const handleReiniciar = () => {
+    setModal({
+      title: '↺ Reiniciar Jogo',
+      body: 'As peças voltam ao INÍCIO e o jogo recomeça.\nOs nomes das equipas mantêm-se.\n\nTens a certeza?',
+      onClose: () => {
+        setPositions(teams.map(() => 0));
+        setTurn(0);
+        setRolled(false);
+        setDiceVal(null);
+        setActiveCard(null);
+        setShowReflete(false);
+        setWinner(null);
+        setLog([`Jogo reiniciado! Começa ${teams[0].name}.`]);
+        resetTimer(timerDefault);
+        stopSabiasTimer();
+        pairDeck.current = shuffle(PAIRS.map((_, i) => i));
+        sabiasDeck.current = shuffle(SABIAS.map((_, i) => i));
+      },
+    });
+  };
+
+  // ── Novo jogo (volta ao setup) ────────────────────────────────
+  const handleNovoJogo = () => {
+    setModal({
+      title: '⚙️ Novo Jogo',
+      body: 'Vais voltar ao ecrã de configuração.\nO jogo actual será terminado.\n\nTens a certeza?',
+      onClose: () => {
+        clearInterval(timerRef.current);
+        stopSabiasTimer();
+        onRestart();
+      },
+    });
+  };
+
+  // ── Instruções ────────────────────────────────────────────────
+  const INSTRUCOES = `1. Todos partem do INÍCIO; começa a equipa que tirar o dado mais alto.
+
+2. Cada equipa joga uma vez (alternadamente), lançando o dado e avançando as casas correspondentes.
+
+3. Casa DILEMA — a equipa lê a carta em voz alta. Todos os participantes podem dar a sua opinião. O verso da carta (REFLETE) pode ajudar. Não há respostas certas.
+
+4. Casa TIRA UMA CARTA (SABIAS QUE) — lê a carta. A equipa tem 2 minutos e avança automaticamente 1 casa.
+
+5. Casa ESTIVE A PENSAR (5) ou O QUE ACHAS? (10) — a equipa sobe de casa.
+
+6. Casa NINGUÉM VIU! (11) ou NÃO ME INTERESSA! (15) — a equipa desce de casa.
+
+7. Ganha a equipa que chegar ao FIM ou estiver mais perto.`;
+
+  const handleInstrucoes = () => {
+    setModal({
+      title: '📋 Instruções',
+      body: INSTRUCOES,
+    });
   };
 
   // ── Próximo turno ─────────────────────────────────────────────
@@ -348,6 +409,37 @@ export default function GameScreen({ teams, onRestart }) {
             </div>
           ))}
         </div>
+
+        {/* ── BOTÕES DE NAVEGAÇÃO ── */}
+        <div style={{ marginTop: 'auto', paddingTop: 8, display: 'flex', flexDirection: 'column', gap: 5, borderTop: `1px solid ${C.border}` }}>
+          <button onClick={handleInstrucoes} style={{
+            width: '100%', background: C.paper, color: C.purple,
+            border: `1.5px solid ${C.purple}`, padding: '7px 0',
+            fontFamily: "'Courier Prime', monospace", fontSize: '0.72rem',
+            letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer',
+            borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+          }}>
+            📋 Instruções
+          </button>
+          <button onClick={handleReiniciar} style={{
+            width: '100%', background: C.paper, color: C.orange,
+            border: `1.5px solid ${C.orange}`, padding: '7px 0',
+            fontFamily: "'Courier Prime', monospace", fontSize: '0.72rem',
+            letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer',
+            borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+          }}>
+            ↺ Reiniciar
+          </button>
+          <button onClick={handleNovoJogo} style={{
+            width: '100%', background: C.paper, color: C.inkLight,
+            border: `1.5px solid ${C.border}`, padding: '7px 0',
+            fontFamily: "'Courier Prime', monospace", fontSize: '0.72rem',
+            letterSpacing: 1, textTransform: 'uppercase', cursor: 'pointer',
+            borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+          }}>
+            ⚙️ Novo Jogo
+          </button>
+        </div>
       </div>
 
       {/* ── TABULEIRO ── */}
@@ -431,10 +523,19 @@ export default function GameScreen({ teams, onRestart }) {
       {/* ── MODAL ── */}
       {modal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(44,24,16,0.55)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-          <div style={{ background: C.paper, border: `3px solid ${C.ink}`, borderRadius: 10, padding: 26, maxWidth: 400, width: '100%', boxShadow: `6px 6px 0 ${C.ink}` }}>
+          <div style={{ background: C.paper, border: `3px solid ${C.ink}`, borderRadius: 10, padding: 26, maxWidth: 420, width: '100%', boxShadow: `6px 6px 0 ${C.ink}` }}>
             <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.25rem', color: C.purple, textAlign: 'center', marginBottom: 10 }}>{modal.title}</div>
             <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: '0.82rem', color: C.ink, textAlign: 'center', lineHeight: 1.7, marginBottom: 18, whiteSpace: 'pre-line' }}>{modal.body}</div>
-            <button onClick={closeModal} style={{ width: '100%', background: C.purple, color: 'white', border: `2px solid ${C.ink}`, padding: '9px 0', fontFamily: "'Special Elite', cursive", fontSize: '0.88rem', letterSpacing: 1, cursor: 'pointer', borderRadius: 4, boxShadow: `3px 3px 0 ${C.ink}` }}>Continuar</button>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {modal.onClose && (
+                <button onClick={() => setModal(null)} style={{ flex: 1, background: C.paper, color: C.inkLight, border: `2px solid ${C.border}`, padding: '9px 0', fontFamily: "'Special Elite', cursive", fontSize: '0.85rem', letterSpacing: 1, cursor: 'pointer', borderRadius: 4 }}>
+                  Cancelar
+                </button>
+              )}
+              <button onClick={closeModal} style={{ flex: 2, background: C.purple, color: 'white', border: `2px solid ${C.ink}`, padding: '9px 0', fontFamily: "'Special Elite', cursive", fontSize: '0.88rem', letterSpacing: 1, cursor: 'pointer', borderRadius: 4, boxShadow: `3px 3px 0 ${C.ink}` }}>
+                {modal.onClose ? 'Confirmar' : 'Continuar'}
+              </button>
+            </div>
           </div>
         </div>
       )}
